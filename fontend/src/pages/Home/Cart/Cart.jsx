@@ -4,7 +4,7 @@ import { StoreContext } from "../../../Context/StoreContext";
 import { useNavigate } from "react-router-dom";
 
 const Cart = () => {
-  const { food_list, cartItems, removeFromCart, getTotalCartAmount } =
+  const { food_list, cartItems, removeFromCart, getTotalCartAmount, url } =
     useContext(StoreContext);
 
   const navigate = useNavigate();
@@ -22,30 +22,28 @@ const Cart = () => {
         </div>
         <br />
         <hr />
-        {food_list.map((item, index) => {
+        {food_list.map((item) => {
           const quantity = cartItems[item._id];
           // Checking if the item with that id in cartItems exists and is greater than zero
           // If it exists and the quantity is greater than zero, we are rendering the details of that particular item (filter)
           if (quantity > 0) {
             return (
-              <>
+              <React.Fragment key={item._id}>
                 <div className="cart-items-title cart-items-item">
-                  <img src={item.image} alt="" />
+                  <img src={`${url}images/${item.image}`} alt={item.name} />
                   <p>{item.name}</p>
                   <p>${item.price}</p>
                   <p>{cartItems[item._id]}</p>
                   <p>${item.price * cartItems[item._id]}</p>
-                  <p
-                    onClick={() => removeFromCart(cartItems[item._id])}
-                    className="cross"
-                  >
+                  <p onClick={() => removeFromCart(item._id)} className="cross">
                     x
                   </p>
                 </div>
                 <hr />
-              </>
+              </React.Fragment>
             );
           }
+          return null; // Return null if the item doesn't meet the condition
         })}
       </div>
       <div className="cart-bottom">
