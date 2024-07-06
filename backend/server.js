@@ -17,10 +17,16 @@ const port = process.env.PORT || 4000;
 app.use(express.json());
 app.use(cors());
 
+app.use((req, res, next) => {
+  console.log(`Request received: ${req.method} ${req.url}`);
+  next();
+});
+
 //db conntection
 conntectDB();
 
 //api endpoint
+
 app.use("/api/food", foodRouter);
 app.use("/images", express.static("uploads"));
 app.use("/api/user", userRouter);
